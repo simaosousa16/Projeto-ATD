@@ -1,10 +1,10 @@
-    function loadRec(participant, digit, recording)
-    filename = sprintf('participant_%d_digit_%d_recording_%d.txt', participant, digit, recording);
+function loadRec[participant, digit, recording]
+    filename = sprintf('%d_%d_%d.wav',digit, participant, recording);
     
     try
-        fileID = fopen(filename, 'r');
-        data = fscanf(fileID, '%s');
-        fclose(fileID);
+        [yn,fs] = audioread('noisy_voice.wav');
+
+        disp(fs);
         
         disp('Arquivo carregado:');
         disp(data);
