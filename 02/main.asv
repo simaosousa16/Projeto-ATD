@@ -1,0 +1,29 @@
+participant = '02'
+[soundData,sampleRate]  = loadRec(9,participant,49);
+
+t = (0:length(soundData)-1) / sampleRate; % Vetor de tempo
+plot(t, soundData);
+xlabel('Tempo (s)');
+ylabel('Amplitude');
+title('Gráfico de Amplitude em Função do Tempo');
+
+choice = menu("Pick a user:","1 -exp 54","2- exp 55","3- exp 56", "4- exp 57", "5- exp 58", "6- exp 59", "7- exp 60" , "8- exp 61");
+
+switch(choice)
+    case 1
+        plot2D(exp54,all_labels,54,Ids,colors);
+    case 2    
+        plot2D(exp55,all_labels,55,Ids,colors);
+    case 3
+        plot2D(exp56,all_labels,56,Ids,colors);
+    case 4
+        plot2D(exp57,all_labels,57,Ids,colors);
+    case 5
+        plot2D(exp58,all_labels,58,Ids,colors);
+    case 6 
+        plot2D(exp59,all_labels,59,Ids,colors);
+    case 7
+        plot2D(exp60,all_labels,60,Ids,colors);
+    case 8
+        plot2D(exp61,all_labels,61,Ids,colors);
+end

@@ -1,0 +1,17 @@
+function plotRec(data)
+    try
+        t = (0:length(data[0][0])-1) / data[0][1]; % Vetor de tempo
+
+        figure;
+
+        subplot(10,1,2)
+        plot(t,data[0])
+        xlabel('Tempo (s)');
+        ylabel('Amplitude');
+        title('0');
+
+
+    catch
+        disp('Erro.');
+    end
+end
