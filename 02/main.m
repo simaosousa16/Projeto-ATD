@@ -4,8 +4,8 @@ participant = '02';
 
 recording = input('Enter Recording: ', 's');
 
-soundDataArray = cell(1, numFiles);
-sampleRateArray = zeros(1, numFiles);
+soundDataArray = cell(1, 10);
+sampleRateArray = zeros(1, 10);
 
 for i = 1 : 10
     disp(i);
@@ -16,7 +16,12 @@ for i = 1 : 10
 
 end
 
-soundDataArray = cell2mat(data(:, 1));
-sampleRateArray = cell2mat(data(:, 2));
+t = (0:length(soundDataArray{1})-1) / sampleRateArray(1,1); % Time vector
 
-plotRec(soundDataArray, sampleRateArray);
+figure;
+
+subplot(10, 1, 2);
+plot(t, soundDataArray{1});
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('0');

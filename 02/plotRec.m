@@ -1,6 +1,6 @@
 function plotRec(soundData, sampleRate)
     try
-        t = (0:length(soundData[1])-1) / sampleRate[1]; % Time vector
+        t = (0:length(soundData(1))-1) / sampleRate(1)(1); % Time vector
 
         figure;
 
