@@ -4,7 +4,7 @@ function [yn,fs] = loadRec(digit, participant, recording)
     disp(participant)
     disp(recording)
 
-    filename = sprintf('%d_%s_%s.wav', digit, participant, recording);
+    filename = sprintf('%d_%s_%d.wav', digit, participant, recording);
     display(filename)
     try
         [yn, fs] = audioread(filename);
