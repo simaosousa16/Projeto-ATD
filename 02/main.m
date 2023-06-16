@@ -7,7 +7,6 @@ soundDataArray = cell(1, 10);
 sampleRateArray = zeros(1, 10);
 
 for i = 1 : 10
-    disp(i);
     [soundData, sampleRate]  = loadRec(i-1, participant, str2double(recording));
     
     soundDataArray{i} = soundData;
@@ -47,10 +46,34 @@ end
 
 %%
 
-t = linspace(0,1,length(meanSignals{8}))
+digito = input('Enter Digito: ', 's');
+
+t = linspace(0, 1, length(meanSignals{8}));
+
 % Assuming t is the time vector and meanSignals is the cell array containing mean signals
+mean_signal = meanSignals{str2double(digito) + 1};
+[max_amp, max_idx] = max(mean_signal);
+[min_amp, min_idx] = min(mean_signal);
+
+disp(max_amp)
+
+disp(max(soundDataArray{2}));
+
+
+
+disp(min_amp)
+
 figure;
-plot(t, meanSignals{2});
+plot(t, mean_signal);
+
 xlabel('Time (s)');
 ylabel('Amplitude');
-title('Mean Signal for Digit 0');
+title('Mean Signal');
+
+hold on;
+plot(t(max_idx), max_amp, 'ro', 'MarkerSize', 10);
+plot(t(min_idx), min_amp, 'bo', 'MarkerSize', 10);
+hold off;
+
+legend('Mean Signal', 'Maximum Amplitude', 'Minimum Amplitude');
+
