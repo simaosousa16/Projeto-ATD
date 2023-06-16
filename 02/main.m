@@ -8,18 +8,12 @@ sampleRateArray = zeros(1, 10);
 
 for i = 1 : 10
     [soundData, sampleRate]  = loadRec(i-1, participant, str2double(recording));
-    
     soundDataArray{i} = soundData;
     sampleRateArray(i) = sampleRate;
 
 end
 
-
-
-%% 4
-
 plotRec4(soundDataArray,sampleRateArray);
-
 %% 4.1
 
 digito1 = input('digito 1: ', 's');
@@ -32,7 +26,7 @@ plotRec4_1(soundDataArray,sampleRateArray,str2double(digito1),str2double(digito2
 
 %% 4.2
 
-plotEnergy(soundDataArray,sampleRateArray,1000);
+plotEnergy(soundDataArray,sampleRateArray,200);
 calculateMeanSignals('02',50,length(soundDataArray{1}))
 
 meanSignals = cell(1, 10);
@@ -56,11 +50,8 @@ mean_signal = meanSignals{str2double(digito) + 1};
 [min_amp, min_idx] = min(mean_signal);
 
 disp(max_amp)
-
-disp(max(soundDataArray{2}));
-
-
-
+disp(max(soundDataArray{str2double(digito) + 1}));
+sound(meanSignals{str2double(digito) +1},sampleRateArray(str2double(digito) +1));
 disp(min_amp)
 
 figure;
@@ -76,4 +67,5 @@ plot(t(min_idx), min_amp, 'bo', 'MarkerSize', 10);
 hold off;
 
 legend('Mean Signal', 'Maximum Amplitude', 'Minimum Amplitude');
+
 

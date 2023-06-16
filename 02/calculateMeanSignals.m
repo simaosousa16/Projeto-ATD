@@ -4,7 +4,7 @@ function calculateMeanSignals(participant, recordingsPerDigit, targetSize)
     for digit = 0:9
         digitSignals = cell(0, recordingsPerDigit); % Cell array to store signals for the current digit
         maxLength = 0; % Variable to track the maximum signal length
-        
+
         % Load and store the signals for the current digit
         for recording = 0:recordingsPerDigit-1
             disp(recording)
@@ -12,11 +12,17 @@ function calculateMeanSignals(participant, recordingsPerDigit, targetSize)
             digitSignals{recording+1} = soundData;
             maxLength = max(maxLength, length(soundData));
         end
-        
+
         % Process the signals for the current digit
         processedSignals = zeros(maxLength, recordingsPerDigit);
         for i = 1:recordingsPerDigit
             signal = digitSignals{i};
+
+            % Remove initial silence from the signal
+            threshold = 0.005; % Adjust as needed
+            startIndex = find(abs(signal) > threshold, 1, 'first');
+            signal = signal(startIndex:end);
+
             % Zero-padding or truncation to the maximum length
             if length(signal) < maxLength
                 signal = [signal; zeros(maxLength - length(signal), 1)];
@@ -25,16 +31,16 @@ function calculateMeanSignals(participant, recordingsPerDigit, targetSize)
             end
             processedSignals(:, i) = signal;
         end
-        
+
         % Calculate the mean signal for the current digit
         meanSignal = mean(processedSignals, 2);
-        
+
         % Zero padding to the target size
         paddedSignal = zeroPadding(meanSignal, targetSize);
-        
+
         % Store the mean signal for the current digit
         meanSignals{digit+1} = paddedSignal;
-        
+
         % Save the mean signal to a file
         filename = sprintf('mean_signal_digit_%02d.mat', digit);
         saveData(filename, paddedSignal);
