@@ -1,4 +1,4 @@
-function calculateMeanSignals(participant, recordingsPerDigit, targetSize)
+function calculateMeanSignals(participant, recordingsPerDigit)
     meanSignals = cell(1, 10); % Cell array to store mean signals for each digit
 
     for digit = 0:9
@@ -17,44 +17,20 @@ function calculateMeanSignals(participant, recordingsPerDigit, targetSize)
         processedSignals = zeros(maxLength, recordingsPerDigit);
         for i = 1:recordingsPerDigit
             signal = digitSignals{i};
-
-            % Remove initial silence from the signal
-            threshold = 0.005; % Adjust as needed
-            startIndex = find(abs(signal) > threshold, 1, 'first');
-            signal = signal(startIndex:end);
-
-            % Zero-padding or truncation to the maximum length
-            if length(signal) < maxLength
-                signal = [signal; zeros(maxLength - length(signal), 1)];
-            else
-                signal = signal(1:maxLength);
-            end
-
-            % Normalize the signal
-            signal = signal / max(abs(signal));
-
-            processedSignals(:, i) = signal;
+            
+            % Zero padding to the maximum length
+            padded_signal = zeroPadding(signal, maxLength);
+            processedSignals(:, i) = padded_signal;
         end
 
         % Calculate the mean signal for the current digit
         meanSignal = mean(processedSignals, 2);
 
-        % Remove initial silence from the mean signal
-        threshold = 0.005; % Adjust as needed
-        startIndex = find(abs(meanSignal) > threshold, 1, 'first');
-        meanSignal = meanSignal(startIndex:end);
-
-        % Normalize the mean signal
-        meanSignal = meanSignal / max(abs(meanSignal));
-
-        % Zero padding to the target size
-        paddedSignal = zeroPadding(meanSignal, targetSize);
-
         % Store the mean signal for the current digit
-        meanSignals{digit+1} = paddedSignal;
+        meanSignals{digit+1} = meanSignal;
 
         % Save the mean signal to a file
         filename = sprintf('mean_signal_digit_%02d.mat', digit);
-        saveData(filename, paddedSignal);
+        saveData(filename, meanSignal);
     end
 end
