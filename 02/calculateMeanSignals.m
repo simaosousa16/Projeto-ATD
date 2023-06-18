@@ -29,11 +29,23 @@ function calculateMeanSignals(participant, recordingsPerDigit, targetSize)
             else
                 signal = signal(1:maxLength);
             end
+
+            % Normalize the signal
+            signal = signal / max(abs(signal));
+
             processedSignals(:, i) = signal;
         end
 
         % Calculate the mean signal for the current digit
         meanSignal = mean(processedSignals, 2);
+
+        % Remove initial silence from the mean signal
+        threshold = 0.005; % Adjust as needed
+        startIndex = find(abs(meanSignal) > threshold, 1, 'first');
+        meanSignal = meanSignal(startIndex:end);
+
+        % Normalize the mean signal
+        meanSignal = meanSignal / max(abs(meanSignal));
 
         % Zero padding to the target size
         paddedSignal = zeroPadding(meanSignal, targetSize);

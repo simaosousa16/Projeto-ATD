@@ -10,10 +10,34 @@ for i = 1 : 10
     [soundData, sampleRate]  = loadRec(i-1, participant, str2double(recording));
     soundDataArray{i} = soundData;
     sampleRateArray(i) = sampleRate;
+end
+plotRec4(soundDataArray,sampleRateArray);
 
+%%
+digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+energies = zeros(1, 10);
+max_amplitudes = zeros(1, 10);
+
+for i = 1:length(digits)
+    [digit, fs] = loadRec(digits(i), participant, recording);
+    energies(i) = sum(digit.^2);
+    max_amplitudes(i) = max(abs(digit));
 end
 
-plotRec4(soundDataArray,sampleRateArray);
+figure;
+subplot(2, 1, 1);
+bar(digits, energies);
+title('Energia dos Dígitos');
+xlabel('Dígito');
+ylabel('Energia');
+
+subplot(2, 1, 2);
+bar(digits, max_amplitudes);
+title('Amplitude Máxima dos Dígitos');
+xlabel('Dígito');
+ylabel('Amplitude Máxima');
+
+
 %% 4.1
 
 digito1 = input('digito 1: ', 's');
@@ -42,17 +66,45 @@ end
 
 digito = input('Enter Digito: ', 's');
 
+envelope = calculateEnvelope(soundDataArray{str2double(digito)+1});
+power = calculatePower(soundDataArray{str2double(digito)+1});
+disp (power )
+disp('Arquivo carregado:');
+
+% Plot do power e da amplitude de envelope
+t = (0:length(soundDataArray{str2double(digito)+1})-1) / sampleRateArray(str2double(digito)+1);
+
+figure;
+subplot(2, 1, 1);
+plot(power);
+title('Power do Sinal');
+xlabel('Tempo (s)');
+ylabel('Power');
+
+subplot(2, 1, 2);
+plot(t, envelope);
+title('Amplitude de Envelope');
+xlabel('Tempo (s)');
+ylabel('Amplitude');
+
+%%
 t = linspace(0, 1, length(meanSignals{8}));
+
+
 
 % Assuming t is the time vector and meanSignals is the cell array containing mean signals
 mean_signal = meanSignals{str2double(digito) + 1};
 [max_amp, max_idx] = max(mean_signal);
 [min_amp, min_idx] = min(mean_signal);
 
-disp(max_amp)
+disp("max_amp");
+disp(max_amp);
+
 disp(max(soundDataArray{str2double(digito) + 1}));
 sound(meanSignals{str2double(digito) +1},sampleRateArray(str2double(digito) +1));
-disp(min_amp)
+
+disp("min: ");
+disp(min_amp);
 
 figure;
 plot(t, mean_signal);
@@ -68,4 +120,5 @@ hold off;
 
 legend('Mean Signal', 'Maximum Amplitude', 'Minimum Amplitude');
 
+%%
 
