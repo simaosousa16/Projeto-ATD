@@ -279,6 +279,8 @@ for i = 1:length(filenames)
     title(sprintf('%d', i - 1));
 end
 
+%% 
+Ex5();
 
 
     
