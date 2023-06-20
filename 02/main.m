@@ -47,7 +47,7 @@ maxRateOfChange = max(differences ./ timeDifferences);
 minRateOfChange = min(differences ./ timeDifferences);
 
 % Calculate Energy
-energy = sum(smoothedSignal.^2);
+energy = sum(soundData.^2);
 
 % Display the results
 fprintf('Duration: %.2f seconds\n', duration);
@@ -81,26 +81,25 @@ elseif length(peaks) > 500 && length(peaks) < 800 && averageRateOfChange < -0.06
 elseif length(peaks) > 200 && length(peaks) < 800 && averageRateOfChange < -0.005 && averageRateOfChange > -0.08 && maxRateOfChange > 2100 && maxRateOfChange < 5500
     disp("found");
     digito = 3;
-elseif length(peaks) > 600 && length(peaks) < 1700 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
+elseif length(peaks) > 400 && length(peaks) < 3000 && averageRateOfChange < -0 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
     disp("found");
     digito = 4;
-elseif length(peaks) > 600 && length(peaks) < 1700 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
+elseif length(peaks) > 2000 && length(peaks) < 5000 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 8500 && maxRateOfChange < 10000
     disp("found");
     digito = 5;
-elseif length(peaks) > 600 && length(peaks) < 1700 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
+elseif length(peaks) > 1200 && length(peaks) < 2200 && averageRateOfChange < -0.03 && averageRateOfChange > -0.06 && maxRateOfChange > 1000 && maxRateOfChange < 3000
     disp("found");
     digito = 6;
-elseif length(peaks) > 600 && length(peaks) < 1700 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
+elseif length(peaks) > 1000 && length(peaks) < 2100 && averageRateOfChange < -0.01 && averageRateOfChange > -0.05 && maxRateOfChange > 1000 && maxRateOfChange < 2200
     disp("found");
     digito = 7;
-elseif length(peaks) > 600 && length(peaks) < 1700 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
+elseif length(peaks) > 6500 && length(peaks) < 9000 && averageRateOfChange < -0.02 && averageRateOfChange > -0.14 && maxRateOfChange > 2000 && maxRateOfChange < 9000
     disp("found");
     digito = 8;
-elseif length(peaks) > 600 && length(peaks) < 1700 && averageRateOfChange < -0.06 && averageRateOfChange > -0.15 && maxRateOfChange > 7000 && maxRateOfChange < 8500
+elseif length(peaks) > 900 && length(peaks) < 2000 && averageRateOfChange < -0.08 && averageRateOfChange > -0.13 && maxRateOfChange > 7000 && maxRateOfChange < 9300
     disp("found");
     digito = 9;
 end
-
 
 % Step 4: Output
 disp("digito");

@@ -14,15 +14,15 @@ function Ex5()
         signals = cell(1, recordingsPerDigit); % Cell array to store signals for the current digit
         
         % Load the signals for the current digit
-        for recording = 1:recordingsPerDigit-1
+        for recording = 1:recordingsPerDigit
             [soundData, sampleRate] = loadRec(digit, participant, recording);            
             soundData = zeroPadding(soundData, max(sampleRate));
             signals{recording} = soundData;
         end
         
         % Calculate the amplitude spectra for each signal
-        amplitude_spectra = zeros(recordingsPerDigit, resolution/2+1);
-        for i = 1:recordingsPerDigit-1
+        amplitude_spectra = zeros(recordingsPerDigit, resolution);
+        for i = 1:recordingsPerDigit
             signal = signals{i};
             N = numel(signal);
             spectrum = abs(fft(signal, resolution)); % Compute the Fourier spectrum with lower resolution
@@ -55,11 +55,11 @@ function Ex5()
     for i = 1:numel(digits)
         subplot(2, 5, i);
         hold on;
-        plot(frequencies, 20*log10(spectra{i}), 'b', 'LineWidth', 1);
-        plot(frequencies, 20*log10(first_quartile{i}), '--r', 'LineWidth', 1);
-        plot(frequencies, 20*log10(third_quartile{i}), '--k', 'LineWidth', 1);
+        plot(frequencies, spectra{i}, 'LineWidth', 1, 'Color', colors(i, :));
+        plot(frequencies, first_quartile{i}, '--', 'LineWidth', 1.5, 'Color', [1, 1, 0]);
+        plot(frequencies, third_quartile{i}, '--', 'LineWidth', 1.5, 'Color', [0, 0, 0]);
         xlabel('Frequency (Hz)');
-        ylabel('Amplitude (dB)');
+        ylabel('Amplitude');
         title(['Digit ', num2str(digits(i))]);
         legend('Median', 'First Quartile', 'Third Quartile');
     end

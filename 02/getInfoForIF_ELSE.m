@@ -27,7 +27,7 @@ function result = getInfoForIF_ELSE(participant)
             soundData = digitSignals{recording};
             smoothedSignal = processar_sinal(soundData);
             smoothedSignal = calculateEnvelope(smoothedSignal);
-           
+           88
             % Calculate Duration
             duration = length(smoothedSignal) / 48000;
             
