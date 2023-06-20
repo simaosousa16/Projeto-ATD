@@ -25,7 +25,14 @@ function Ex5()
         for i = 1:recordingsPerDigit-1
             signal = signals{i};
             N = numel(signal);
-            spectrum = abs(fft(signal, resolution)); % Compute the Fourier spectrum with lower resolution
+            % 4 Diferent Windows to use Rectangular, Hann or Hanning,
+            % BlackMan anda Flat Top
+            rectangularWindow = ones(size(signal)); % Create a Rectangular window of length N
+            hannWindow = hann(N); % Create a Hann window
+            blackmanWindow = blackman(N); % Create a Blackman window
+            flatTopWindow = flattopwin(N); % Create a Flat Top window
+            windowedSignal = signal .* rectangularWindow; % Apply the window function to the signal
+            spectrum = abs(fft(windowedSignal, resolution)); % Compute the Fourier spectrum
             amplitude_spectrum = spectrum(1:resolution/2+1); % Keep only frequencies up to the Nyquist frequency
             amplitude_spectra(i, :) = amplitude_spectrum;
         end
@@ -50,9 +57,9 @@ function Ex5()
     frequencies = linspace(0, sampleRate/2, resolution/2+1);
     
     figure;
-    colors = lines(numel(digits)); % Generate a color map for the lines
     
     for i = 1:numel(digits)
+        % Plot the amplitude spectra
         subplot(2, 5, i);
         hold on;
         plot(frequencies, 20*log10(spectra{i}), 'b', 'LineWidth', 1);
@@ -60,7 +67,27 @@ function Ex5()
         plot(frequencies, 20*log10(third_quartile{i}), '--k', 'LineWidth', 1);
         xlabel('Frequency (Hz)');
         ylabel('Amplitude (dB)');
-        title(['Digit ', num2str(digits(i))]);
+        title(['Digit ', num2str(digits(i)), ' (Amplitude Spectrum)']);
         legend('Median', 'First Quartile', 'Third Quartile');
     end
+    
+    
+    % Calculate the dominant frequency, spectral energy and spectral peaks for each signal
+    for i = 1:numel(digits)
+        signal = spectra{i};
+        sampleRate = max(sampleRate);
+
+        dominant_frequency = getDominantFrequency(signal, sampleRate);
+        spectral_energy = calculateSpectralEnergy(signal);
+
+        % Print the dominant frequency and spectral energy for the digit
+        disp(['Digit ', num2str(digits(i))]);
+        disp(['Dominant Frequency: ', num2str(dominant_frequency), ' Hz']);
+        disp(['Spectral Energy: ', num2str(spectral_energy)]);
+
+        % Identify spectral peaks
+        minPeakHeight = -140;
+        identifySpectralPeaks(signal, sampleRate, minPeakHeight);
+    end
+
 end

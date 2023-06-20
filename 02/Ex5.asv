@@ -14,18 +14,25 @@ function Ex5()
         signals = cell(1, recordingsPerDigit); % Cell array to store signals for the current digit
         
         % Load the signals for the current digit
-        for recording = 1:recordingsPerDigit
+        for recording = 1:recordingsPerDigit-1
             [soundData, sampleRate] = loadRec(digit, participant, recording);            
             soundData = zeroPadding(soundData, max(sampleRate));
             signals{recording} = soundData;
         end
         
         % Calculate the amplitude spectra for each signal
-        amplitude_spectra = zeros(recordingsPerDigit, resolution);
-        for i = 1:recordingsPerDigit
+        amplitude_spectra = zeros(recordingsPerDigit, resolution/2+1);
+        for i = 1:recordingsPerDigit-1
             signal = signals{i};
             N = numel(signal);
-            spectrum = abs(fft(signal, resolution)); % Compute the Fourier spectrum with lower resolution
+            % 4 Diferent Windows to use Rectangular, Hann or Hanning,
+            % BlackMan anda Flat Top
+            rectangularWindow = ones(size(signal)); % Create a Rectangular window of length N
+            hannWindow = hann(N); % Create a Hann window
+            blackmanWindow = blackman(N); % Create a Blackman window
+            flatTopWindow = flattopwin(N); % Create a Flat Top window
+            windowedSignal = signal .* rectangularWindow; % Apply the window function to the signal
+            spectrum = abs(fft(windowed, resolution)); % Compute the Fourier spectrum
             amplitude_spectrum = spectrum(1:resolution/2+1); % Keep only frequencies up to the Nyquist frequency
             amplitude_spectra(i, :) = amplitude_spectrum;
         end
@@ -50,17 +57,38 @@ function Ex5()
     frequencies = linspace(0, sampleRate/2, resolution/2+1);
     
     figure;
-    colors = lines(numel(digits)); % Generate a color map for the lines
     
     for i = 1:numel(digits)
+        % Plot the amplitude spectra
         subplot(2, 5, i);
         hold on;
-        plot(frequencies, spectra{i}, 'LineWidth', 1, 'Color', colors(i, :));
-        plot(frequencies, first_quartile{i}, '--', 'LineWidth', 1.5, 'Color', [1, 1, 0]);
-        plot(frequencies, third_quartile{i}, '--', 'LineWidth', 1.5, 'Color', [0, 0, 0]);
+        plot(frequencies, 20*log10(spectra{i}), 'b', 'LineWidth', 1);
+        plot(frequencies, 20*log10(first_quartile{i}), '--r', 'LineWidth', 1);
+        plot(frequencies, 20*log10(third_quartile{i}), '--k', 'LineWidth', 1);
         xlabel('Frequency (Hz)');
-        ylabel('Amplitude');
-        title(['Digit ', num2str(digits(i))]);
+        ylabel('Amplitude (dB)');
+        title(['Digit ', num2str(digits(i)), ' (Amplitude Spectrum)']);
         legend('Median', 'First Quartile', 'Third Quartile');
     end
+    
+    % Calculate the dominant frequency for each signal
+    dominant_frequencies = zeros(1, recordingsPerDigit-1);
+    for i = 1:recordingsPerDigit-1
+        windowed_singal = signals{i};
+        sampleRate = max(sampleRate);
+        dominant_frequencies(i) = getDominantFrequency(signal, sampleRate);
+    end
+
+    % Print the dominant frequencies for each digit
+    disp('Dominant Frequencies:');
+    for digitIndex = 1:numel(digits)
+        digit = digits(digitIndex);
+        disp(['Digit ', num2str(digit), ': ', num2str(dominant_frequencies(digitIndex)), ' Hz']);
+        
+        % Identify spectral peaks
+        minPeakHeight = -125;
+        disp(['Digit ', num2str(digit), ': ']);
+        identifySpectralPeaks(signal, sampleRate, minPeakHeight);
+    end
+
 end
