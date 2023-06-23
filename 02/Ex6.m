@@ -43,7 +43,7 @@ function Ex6()
             N = numel(windows_soundData);
         end
 
-        rectangularWindow = ones(size(windows_soundData)); % Create a Rectangular window of length N
+        rectangularWindow = ones(N_frame, 1); % Create a Rectangular window of length N
         hannWindow = hann(N_frame); % Create a Hann window
         blackmanWindow = blackman(N_frame); % Create a Blackman window
         flatTopWindow = flattopwin(N_frame); % Create a Flat Top window
@@ -62,7 +62,7 @@ function Ex6()
             frameStart = j*(N_frame - N_overlap) + 1;
             frameEnd = frameStart + N_frame-1;
             frame = windows_soundData(frameStart:frameEnd);
-            frame = frame.*hannWindow; %Change window here for one of the 4
+            frame = frame.*rectangularWindow; %Change window here for one of the 4
             DFT_frame = fftshift(fft(frame));
             DFT_frame = DFT_frame(floor(N_frame/2)+1:end);
             mags_frame = abs(DFT_frame)/N_frame;
