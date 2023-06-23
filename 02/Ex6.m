@@ -2,7 +2,7 @@ function Ex6()
     % Step 1: Data Preparation
     participant = '02';
     digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; % List of digits in your dataset
-    recordingsPerDigit = 50;
+    recordingsPerDigit = 1:50;
     
     %Plot Digit Spectogram
     figure;
@@ -78,9 +78,9 @@ function Ex6()
 
         t = 0:T_frame-T_overlap:(numFrames-1)*(T_frame-T_overlap);
 
-        plot(t, fundamental_freqs, 'b--');
+        plot(t, fundamental_freqs, '-ob');
         xlabel('t(s)');
-        ylabel('f fundamental (Hz)');
+        ylabel('Fundamental Freq (Hz)');
         ylim('auto');
         xlim('auto');
         title(['Fundamental Frequency Windows - Digit ', num2str(digit)]);
@@ -148,7 +148,7 @@ function Ex6()
 
         t1 = 0:T_frame-T_overlap:(numFrames1-1)*(T_frame-T_overlap);
 
-        plot(t1, fundamental_freqs1, 'b--');
+        plot(t1, fundamental_freqs1, '-ob');
         hold on;
 
         N2 = numel(soundData2);
@@ -179,10 +179,10 @@ function Ex6()
 
         t2 = 0:T_frame-T_overlap:(numFrames2-1)*(T_frame-T_overlap);
 
-        plot(t2, fundamental_freqs2, 'r--');
+        plot(t2, fundamental_freqs2, '-or');
 
         xlabel('t(s)');
-        ylabel('f fundamental (Hz)');
+        ylabel('Fundamental Freq (Hz)');
         ylim('auto');
         xlim('auto');
 
@@ -248,10 +248,10 @@ function Ex6()
 
         t = 0:T_frame-T_overlap:(numFrames-1)*(T_frame-T_overlap);
 
-        plot(t, fundamental_freqs, 'b--');
+        plot(t, fundamental_freqs, '-ob');
         xlabel('t(s)');
-        ylabel('f fundamental (Hz)');
-        ylim([250 550]);
+        ylabel('Fundamental Freq (Hz)');
+        ylim('auto');
         xlim('auto');
         title(['Fundamental Frequency - Digit ', num2str(digit)]);
     end
