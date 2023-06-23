@@ -72,22 +72,95 @@ function Ex5()
     end
     
     
-    % Calculate the dominant frequency, spectral energy and spectral peaks for each signal
-    for i = 1:numel(digits)
-        signal = spectra{i};
-        sampleRate = max(sampleRate);
+    % Calculate spectral median amplitudes for pairs
+    matrix_amp = zeros(numel(digits), numel(recordingsPerDigit));
+    c = 0;
 
-        dominant_frequency = getDominantFrequency(signal, sampleRate);
-        spectral_energy = calculateSpectralEnergy(signal);
+    for i = 1:digits
+        disp(i)
+        disp(c)
+        digits = num2str(i-1);
 
-        % Print the dominant frequency and spectral energy for the digit
-        disp(['Digit ', num2str(digits(i))]);
-        disp(['Dominant Frequency: ', num2str(dominant_frequency), ' Hz']);
-        disp(['Spectral Energy: ', num2str(spectral_energy)]);
-
-        % Identify spectral peaks
-        minPeakHeight = -140;
-        identifySpectralPeaks(signal, sampleRate, minPeakHeight);
+        for j = 1:recordingPerDigit-1
+            mean_spectrum = mean(amplitude_spectrum); % mediam spectrum amplitude
+            matrix_amp(i, j) = mean_spectrum;
+        end
+        c = c + 1;
+        if c == 2
+            c = 0;
+            str = sprintf('Pares %d e %d', i-2, i-1);
+            subplot(2, 3, round(i/2)) % criar um subplot para exibir o boxplot
+            boxplot(matrix_amp'); % plotar o boxplot das amplitudes
+            ylabel('Amplitude espectral média');
+            xlabel('Dígitos');
+            xticklabels({'0','1','2','3','4','5','6','7','8','9'});
+            title(str);
+            matrix_amp = zeros(numel(digits), numel(recordingsPerDigits)); % redefinir a matriz de amplitudes para a próxima iteração
+        end
     end
+    
+    % Calculate spectral median amplitudes for each digit
+    median_spec_amp = zeros(1, 10);
 
+    for i = 1:digits
+        digit = num2str(i);
+        complete_spectra = []; % matrix to keep spectra of all recording per Digit
+
+        for j = 1:recordingsPerDigit-1
+            complete_spectra = [all_spectra; amplitude_spectrum];
+        end
+
+        median_spectrum = median(all_spectra, 1); % espectro de amplitude mediano
+        Q1_spectrum = quantile(all_spectra, 0.25, 1); % primeiro quartil
+        Q3_spectrum = quantile(all_spectra, 0.75, 1); % terceiro quartil
+
+        mean_spectrum = mean(median_spectrum); % amplitude espectral média
+
+        median_spec_amp(i+1) = mean_spectrum;
+
+        % Plot graphs
+        figure;
+        plot(Q1_spectrum);
+        hold on;
+        plot(Q3_spectrum);
+        plot(median_spectrum);
+        xlabel('Frequência');
+        ylabel('Amplitude');
+        title(['Quartile Plot for Digit ', digito]);
+        legend('Q1', 'Q3', 'Median');
+        
+
+        % Verificar se median_spectrum tem pelo menos 2 elementos antes de definir os limites do eixo x
+        if numel(median_spectrum) >= 2
+            xlim([1, numel(median_spectrum)]);
+        end
+    end
+    
+    %Calculate median spectral energy for each digit
+    digits_energy = zeros(1, 10);
+
+    for i = 1:digits
+        digit = num2str(i);
+
+        all_energies = []; % matrix to store all recordings energy
+
+        for j = 1:recordingsPerDigit-1
+            signal_energy = sum(signals{i}.^2); % cálculo da energia do sinal
+
+            all_energies = [all_energies; signal_energy];
+        end
+
+        mean_energy = mean(all_energies); % energia espectral média
+
+        digits_energy(i+1) = mean_energy;
+
+        %Plot the energys
+        figure;
+        histogram(all_energies);
+        xlabel('Energia');
+        ylabel('Frequência');
+        title(['Histogram of Energy for Digit ', digit]);
+    end
+    
+    
 end
