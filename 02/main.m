@@ -38,7 +38,7 @@ zlabel('Amplitudes máximas')
 title('Gráfico da energia média do envelope, número de picos do envelope e amplitudes máximas do envelope para cada digito')
 
 %%
-
+Ex5();
 
 %%
-Ex5();
+Ex6();
