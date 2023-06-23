@@ -18,7 +18,6 @@ plotRec4(soundDataArray,sampleRateArray);
 digito1 = input('digito 1: ', 's');
 digito2 = input('digito 2: ', 's');
 
-
 disp(digito1)
 disp(digito2)
 plotRec4_1(soundDataArray,sampleRateArray,str2double(digito1),str2double(digito2));
