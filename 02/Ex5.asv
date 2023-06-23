@@ -6,7 +6,7 @@ function Ex5()
     recordingsPerDigit = 1:50;
     
     %%
-    
+    %{
     %Quartil plot with different windows
     normalized_spectrum = zeros(10, numel(recordingsPerDigit), 24000);
 
@@ -77,7 +77,7 @@ function Ex5()
         digit = digits(i);
         disp(['SNR for Digit ', num2str(digit), ': ', num2str(amplitudes(digit + 1) / std(Q2))]);
     end
-    
+    %}
     %%
     %Calculate median spectral amplitudes for pairs of digits
     matrix_amps = zeros(numel(digits), numel(recordingsPerDigit)); % matriz para armazenar as amplitudes espectrais médias de cada repetição
@@ -159,7 +159,6 @@ function Ex5()
     
     %%
     %Calculate spectral energy for each digit
-    figure;
     spectral_energys = zeros(1, 10);
 
     for i = 1:numel(digits)
@@ -171,19 +170,20 @@ function Ex5()
             recording = recordingsPerDigit(i) -1;
             [soundData, sampleRate] = loadRec(digit, participant, recording);
 
-            signal_energy = sum(soundData.^2); % cálculo da energia do sinal
+            signal_energy = sum(x.^2); % cálculo da energia do sinal
 
-            all_spectral_energies = [all_spectral_energies; signal_energy];
+            all_spectral_energies = [all_spectral_energies; energy];
         end
 
         mean_energy = mean(all_spectral_energies); % energia espectral média
 
-        spectral_energys(i) = mean_energy;
+        spectral_energys(i+1) = mean_energy;
+
+        % Plotagem do histograma de energias
+        %figure;
+        %histogram(all_energies);
+        %xlabel('Energia');
+        %ylabel('Frequência');
+        %title(['Histogram of Energy for Digit ', digito]);
     end
-    
-    plot(spectral_energys, matrix_spectral_amps,"o");
-    text(spectral_energys+.02, matrix_spectral_amps, {'0','1','2','3','4','5','6','7','8','9'})
-    xlabel('Average Spectral Energy');
-    ylabel('Average Spectral Amplitude');
-    title('Average Spectral Amplitude by Average Spectral Energy for Each Digit');
 end
