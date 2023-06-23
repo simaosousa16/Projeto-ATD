@@ -14,25 +14,29 @@ end
 
 plotRec4(soundDataArray,sampleRateArray);
 %% 4.1
+energia_pares();
 
-digito1 = input('digito 1: ', 's');
-digito2 = input('digito 2: ', 's');
-
-disp(digito1)
-disp(digito2)
-plotRec4_1(soundDataArray,sampleRateArray,str2double(digito1),str2double(digito2));
-%%
-
+%% 4.2 e 4.3
 amplitudes_max = amplitudes_max();
+amplitudes_medias = amplitudes_medias();
 energias_medias = energias_medias();
-
 n_picos_medios = numero_picos();
 
-plot(energias_medias, n_picos_medios,"o");
-text(energias_medias+.02, n_picos_medios, {'0','1','2','3','4','5','6','7','8','9'})
-xlabel('Energia média do envelope');
-ylabel('Número de picos do envelope');
-title('Gráfico da energia médio do envelope pelo número de picos do envelope para cada digito');
+% Create a 3D scatter plot
+figure
+scatter3(energias_medias, n_picos_medios, amplitudes_max, 'o')
+
+% Add text labels
+text(energias_medias+0.02, n_picos_medios, amplitudes_max, {'0','1','2','3','4','5','6','7','8','9'})
+
+% Set the labels for each axis
+xlabel('Energia média')
+ylabel('Número de picos')
+zlabel('Amplitudes máximas')
+
+% Set the title
+title('Gráfico da energia média do envelope, número de picos do envelope e amplitudes máximas do envelope para cada digito')
+
 %%
 
 
