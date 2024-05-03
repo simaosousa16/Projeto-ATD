@@ -1,0 +1,27 @@
+# Project Title
+
+This project is a MATLAB application for audio signal processing.
+
+## Description
+
+This project includes scripts for loading and processing audio data, calculating the Discrete Fourier Transform (DFT), and visualizing the results.
+
+## Installation
+
+Clone the repository and navigate to the project directory.
+
+## Usage
+
+To run the main script, use the following command in MATLAB:
+
+```matlab
+main
+
+This will prompt you to enter a recording number. The script will then load and process the audio data for all digits (0-9) for the specified recording.
+
+## Scripts
+
+Ex5.asv: This script prepares the data and calculates the spectrum of the audio signal using different windowing techniques.
+Ex6.asv: This script is currently empty.
+main.m: This is the main script that loads and processes the audio data.
+main.asv: This script is similar to main.m but also includes additional user prompts and a different plot.
